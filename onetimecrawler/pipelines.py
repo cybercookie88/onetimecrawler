@@ -16,7 +16,7 @@ class OnetimecrawlerPipeline(object):
             host='localhost',
             port=3306,
             user='root',
-            password='JAfaMJbSwSjN',
+            password='1qaz@WSX_OVP',
             database='ovp-project'
         )
         self.c = self.connection.cursor()

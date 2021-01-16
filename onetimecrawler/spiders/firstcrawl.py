@@ -4,7 +4,7 @@ import scrapy
 class FirstcrawlSpider(scrapy.Spider):
     name = 'firstcrawl'
     allowed_domains = ['85tube.net']
-    start_urls = ['https://85tube.net/latest-updates/%s/' % page for page in range(2)]
+    start_urls = ['https://85tube.net/latest-updates/%s/' % page for page in range(100)]
 
     def parse(self, response):
         wrapper = response.xpath('//div[@id="list_videos_latest_videos_list"]')
