@@ -10,53 +10,53 @@ import pymysql
 
 
 class OnetimecrawlerPipeline(object):
-    
+
     def open_spider(self, spider):
         self.connection = pymysql.connect(
-            host = 'localhost',
-            port = 8889,
-            user = 'root',
-            password = 'root',
-            database = 'pythondb'
-            )       
+            host='localhost',
+            port=3306,
+            user='root',
+            password='JAfaMJbSwSjN',
+            database='ovp-project'
+        )
         self.c = self.connection.cursor()
 
-        
     def close_spider(self, spider):
         self.connection.close()
-    
-    
+
     def process_item(self, item, spider):
-        
+
         def formatDict(dictionary):
             return '{"cn":"%s","en":"","jp":""}' % (dictionary)
-        
+
         def formatStr(string):
             return '"%s"' % (string)
-        
-        def formatFor(arr):
-                reformat = '[';
-                index = 0;
-                for x in arr:
-                    index += 1;
 
-                    if (index == len(arr)):
-                        reformat = reformat + '{"cn":"%s","en":"","jp":""}' % (x);
-                    else:
-                        reformat = reformat + '{"cn":"%s","en":"","jp":""},' % (x);
-                return reformat + ']';
-          
-    
+        def formatFor(arr):
+            reformat = '[';
+            index = 0;
+            for x in arr:
+                index += 1;
+
+                if (index == len(arr)):
+                    reformat = reformat + '{"cn":"%s","en":"","jp":""}' % (x);
+                else:
+                    reformat = reformat + '{"cn":"%s","en":"","jp":""},' % (x);
+            return reformat + ']';
+
         self.c.execute('''
-            INSERT INTO spider_85tube (VideoID,ChineseName,Duration,Tags,ImgURL,EmbedURL,videoPage) VALUES (%s,%s,%s,%s,%s,%s,%s)
+            INSERT INTO temp_videos (video_type,title,models,videos_duration,tags,download_link,trailer,img_src,embed_link)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
             ''', (
-            item.get('VideoID'),
-            formatDict(item.get('title')),
-            item.get('Duration'),
-            formatFor(item.get('tags')),
-            formatStr(item.get('img_src')),
-            formatStr(item.get('EmbedURL')),
-            item.get('videoPage')
-            ))
+            4,
+            formatDict(item.get('ChineseName')),
+            '[]',
+            formatStr(item.get('Duration')),
+            formatFor(item.get('Tags')),
+            '[]',
+            '""',
+            formatStr(item.get('ImgURL')),
+            formatStr(item.get('EmbedURL'))
+        ))
         self.connection.commit()
         return item
